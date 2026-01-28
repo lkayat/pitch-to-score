@@ -1,0 +1,5 @@
+/* style.css */
+body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 1rem; }
+button { margin: 0.5rem; padding: 0.8rem 1.5rem; font-size: 1.1rem; }
+#staff svg { width: 100%; height: auto; border: 1px solid #ddd; border-radius: 6px; }
+#status { margin: 1rem 0; font-weight: bold; color: #444; }
