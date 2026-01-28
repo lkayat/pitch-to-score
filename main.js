@@ -106,7 +106,28 @@ async function startRecording() {
 function stopAndTranscribe() {
   if (!isRecording) return;
   isRecording = false;
+// === DEBUG: Fake Twinkle Twinkle data so we can test rendering/playback instantly ===
+pitches = [
+  // Bar 1: C C G G A A G
+  {start: 0.0, end: 0.5, midi: 72},  // C5
+  {start: 0.5, end: 1.0, midi: 72},
+  {start: 1.0, end: 1.5, midi: 79},  // G5
+  {start: 1.5, end: 2.0, midi: 79},
+  {start: 2.0, end: 2.5, midi: 81},  // A5
+  {start: 2.5, end: 3.0, midi: 81},
+  {start: 3.0, end: 4.0, midi: 79},  // G5 (held longer)
 
+  // Bar 2: F F E E D D C
+  {start: 4.0, end: 4.5, midi: 77},  // F5
+  {start: 4.5, end: 5.0, midi: 77},
+  {start: 5.0, end: 5.5, midi: 76},  // E5
+  {start: 5.5, end: 6.0, midi: 76},
+  {start: 6.0, end: 6.5, midi: 74},  // D5
+  {start: 6.5, end: 7.0, midi: 74},
+  {start: 7.0, end: 8.0, midi: 72},  // C5 (held)
+];
+// Uncomment the line below when you're done testing Option 2
+// pitches = [];   // ← restore real recording later
   document.getElementById('start').disabled = false;
   document.getElementById('stop').disabled = true;
   status.textContent = "Processing…";
