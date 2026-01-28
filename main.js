@@ -1,5 +1,6 @@
 // main.js
 import * as Vex from 'https://cdn.jsdelivr.net/npm/vexflow@4.2.3/releases/vexflow-min.js';
+const yin = pitchfinder.YIN({ sampleRate: audioCtx.sampleRate });
 
 // ── State ────────────────────────────────────────
 let audioCtx;
@@ -86,7 +87,7 @@ async function startRecording() {
     scriptProcessor.onaudioprocess = (e) => {
       if (!isRecording) return;
       const input = e.inputBuffer.getChannelData(0);
-      const freq = detectPitch(input, audioCtx.sampleRate);
+      const freq = yin(input);   // returns Hz or -1 if no pitch
 
       const now = audioCtx.currentTime;
 
