@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sing → Score</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- VexFlow CDN (latest as of 2025) -->
+  <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.3/releases/vexflow-min.js"></script>
+</head>
+<body>
+  <h1>Sing to Score</h1>
+  <p>Click "Start" → sing a short melody → click "Stop" → see score</p>
+
+  <button id="start">Start Singing</button>
+  <button id="stop" disabled>Stop & Transcribe</button>
+  <div id="status"></div>
+
+  <div id="staff"></div>
+
+  <button id="play" disabled>▶ Play</button>
+  <button id="export-svg" disabled>Export SVG</button>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
