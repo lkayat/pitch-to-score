@@ -29,24 +29,38 @@ function midiToNoteName(midi) {
   return `${name}/${octave}`;
 }
 
-// Very basic autocorrelation pitch detection
+// Very basic autocorrelation pitch detection → replace with this faster version
 function detectPitch(buffer, sampleRate) {
   const SIZE = buffer.length;
+  const MAX_LAG = Math.min(512, SIZE / 2);   // limit search to reasonable voice range
+  const MIN_LAG = 40;                        // ~1100 Hz max
+
   let maxCorr = 0;
   let bestLag = -1;
 
-  for (let lag = 20; lag < SIZE/2; lag++) {   // min ~50 Hz → max ~1000 Hz
+  // Pre-compute energy once (rough RMS)
+  let energy = 0;
+  for (let i = 0; i < SIZE; i++) energy += buffer[i] * buffer[i];
+  if (energy < 0.0001) return -1;  // too quiet → skip
+
+  for (let lag = MIN_LAG; lag < MAX_LAG; lag++) {
     let corr = 0;
-    for (let i = 0; i < SIZE - lag; i++) {
+    // Only correlate overlapping part + early exit if corr already too low
+    const maxPossible = SIZE - lag;
+    for (let i = 0; i < maxPossible; i += 2) {  // step by 2 → 2× speedup, still accurate enough
       corr += buffer[i] * buffer[i + lag];
     }
+    corr /= maxPossible;  // normalize roughly
+
     if (corr > maxCorr) {
       maxCorr = corr;
       bestLag = lag;
     }
+    // Early exit if correlation is dropping too much
+    if (maxCorr > 0.4 && corr < maxCorr * 0.6) break;
   }
 
-  if (bestLag < 1 || maxCorr < 0.1) return -1; // noise threshold
+  if (bestLag < 1 || maxCorr < 0.15) return -1; // noise threshold raised a bit
   return sampleRate / bestLag;
 }
 
